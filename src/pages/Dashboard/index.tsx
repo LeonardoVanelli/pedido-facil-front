@@ -1,5 +1,9 @@
+import { Container } from "./styles"
+
 function Dashboard() {
-    return <h1>Dashboard</h1>
+    return <Container>
+        <h1>Dashboard</h1>
+    </Container>
 }
 
 export { Dashboard }
