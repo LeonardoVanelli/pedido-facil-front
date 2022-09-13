@@ -1,16 +1,21 @@
-import { Providers } from './context';
-import { Routes } from './routes';
-import { GlobalStyle } from './styles/global';
+import "bootstrap/dist/css/bootstrap.css"
+import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify"
 
-function App() {
+import { Providers } from "./context"
+import { Routes } from "./routes"
+import { GlobalStyle } from "./styles/global"
+
+function App () {
   return (
     <div>
       <Providers>
         <GlobalStyle />
+        <ToastContainer />
         <Routes />
       </Providers>
     </div>
-  );
+  )
 }
 
-export { App };
+export { App }

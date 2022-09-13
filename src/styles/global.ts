@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components"
 
 const GlobalStyle = createGlobalStyle`
     :root {
@@ -13,6 +13,10 @@ const GlobalStyle = createGlobalStyle`
         --gray-3: #A6ADB5;
         --gray-2: #E3E6EA;
         --gray-1: #FFFFFF;
+    }
+
+    html {
+        height: 100%;
     }
 `
 
