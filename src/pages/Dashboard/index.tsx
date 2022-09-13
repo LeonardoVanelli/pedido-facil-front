@@ -1,9 +1,10 @@
+import { NavBar } from "../../components/NavBar"
 import { Container } from "./styles"
 
 function Dashboard() {
-    return <Container>
-        <h1>Dashboard</h1>
-    </Container>
+  return <Container>
+    <NavBar></NavBar>
+  </Container>
 }
 
 export { Dashboard }

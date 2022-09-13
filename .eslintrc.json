@@ -8,12 +8,11 @@
         "standard-with-typescript",
         "plugin:@typescript-eslint/recommended"
     ],
-    "overrides": [
-    ],
+    "overrides": [],
     "parserOptions": {
         "project": "./tsconfig.json",
         "ecmaVersion": "latest",
-        "sourceType": "module"        
+        "sourceType": "module"
     },
     "plugins": [
         "react",
@@ -26,18 +25,40 @@
     },
     "rules": {
         "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx", ".ts"]} ],
+        "@typescript-eslint/no-use-before-define": [
+            "error"
+        ],
+        "react/jsx-filename-extension": [
+            "warn",
+            {
+                "extensions": [
+                    ".tsx",
+                    ".ts"
+                ]
+            }
+        ],
         "@typescript-eslint/explicit-function-return-type": "off",
-        "max-len": ["error", { "code": 80 }],
+        "max-len": [
+            "error",
+            {
+                "code": 80
+            }
+        ],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "indent": ["error", 2],
-        "quotes": ["error", "double"],
+        "indent": [
+            "error",
+            2
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
         "@typescript-eslint/quotes": "off",
         "import/no-duplicates": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/strict-boolean-expressions": 0,
-        "@typescript-eslint/consistent-type-assertions": "off"
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "@typescript-eslint/space-before-function-paren": "off"
     }
 }
