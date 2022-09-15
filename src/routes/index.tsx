@@ -4,6 +4,7 @@ import {
   Route,
   Switch
 } from "react-router-dom"
+import { NavBar } from "../components/NavBar"
 
 import { useUser } from "../hooks/useUser"
 import { Dashboard } from "../pages/Dashboard"
@@ -14,6 +15,7 @@ function Routes () {
 
   return (
     <Router>
+      <NavBar />
       {!user
         ? (
           <Switch>

@@ -17,7 +17,12 @@ const GlobalStyle = createGlobalStyle`
 
     html {
         height: 100%;
+        font-size: 16px;
     }
+
+    * {
+        font-family: 'Inter', sans-serif;
+    }  
 `
 
 export { GlobalStyle }
