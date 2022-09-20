@@ -1,38 +1,35 @@
 import {
-  BrowserRouter as Router,
-  Redirect,
+  BrowserRouter,
   Route,
-  Switch
+  Routes as RoutesDom
 } from "react-router-dom"
 import { NavBar } from "../components/NavBar"
 
 import { useUser } from "../hooks/useUser"
 import { Dashboard } from "../pages/Dashboard"
 import { Login } from "../pages/Login"
+import { Order } from "../pages/Order"
 
 function Routes () {
   const { user } = useUser()
 
-  return (
-    <Router>
-      <NavBar />
-      {!user
-        ? (
-          <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Redirect to="/login" />
-          </Switch>)
-        : (<Switch>
-          <Route path="/" >
-            <Dashboard />
-          </Route>
-          <Redirect to="/" />
-        </Switch>)
-      }
-    </Router>
-  )
+  if (!user) {
+    return (<BrowserRouter>
+      <RoutesDom>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Login />} />
+      </RoutesDom>
+    </BrowserRouter>)
+  }
+
+  return (<BrowserRouter>
+    <NavBar />
+    <RoutesDom>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/order" element={<Order />} />
+      <Route path="*" element={<Dashboard />} />
+    </RoutesDom>
+  </BrowserRouter>)
 }
 
 export { Routes }

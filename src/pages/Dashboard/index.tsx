@@ -17,8 +17,11 @@ import {
 } from "./styles"
 import { DropDownItem } from "./DropDownItem"
 import { Item } from "./Item"
+import { useNavigate } from "react-router-dom"
 
 function Dashboard() {
+  const navigate = useNavigate()
+
   const dropDownItems = [
     { label: "Pedidos" },
     { label: "Preços" },
@@ -32,8 +35,8 @@ function Dashboard() {
     </ImageContainer>
     <Items>
       <ItemColumn>
-        <Item>
-          <FiShoppingBag />
+        <Item onClick={() => navigate("/order")}>
+          <FiShoppingBag/>
         </Item>
         <DropDownItem items={dropDownItems}>
           <GoFile />
