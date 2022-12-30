@@ -57,6 +57,7 @@ function Login () {
                 value={formik.values.email}
                 isValid={formik.touched.email && !formik.errors.email}
                 errorMessage={formik.errors.email}
+                variant="login"
               />
 
               <Input
@@ -68,6 +69,7 @@ function Login () {
                 value={formik.values.password}
                 isValid={formik.touched.password && !formik.errors.password}
                 errorMessage={formik.errors.password}
+                variant="login"
               />
 
               <Row

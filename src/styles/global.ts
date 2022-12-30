@@ -13,6 +13,8 @@ const GlobalStyle = createGlobalStyle`
         --gray-3: #A6ADB5;
         --gray-2: #E3E6EA;
         --gray-1: #FFFFFF;
+
+        --cancel: #FF0000
     }
 
     html {

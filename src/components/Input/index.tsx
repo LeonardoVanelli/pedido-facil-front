@@ -1,5 +1,6 @@
 import { ChangeEventHandler } from "react"
 import { Form } from "react-bootstrap"
+import { FormLabel } from "./styles"
 
 interface IProps {
   id: string
@@ -10,6 +11,7 @@ interface IProps {
   type?: string
   errorMessage: string | undefined
   placeholder?: string | undefined
+  variant?: "login" | "form"
 }
 
 function Input ({
@@ -20,25 +22,25 @@ function Input ({
   value,
   type,
   errorMessage,
-  placeholder
+  placeholder,
+  variant
 }: IProps) {
-  console.log(errorMessage)
-
-  return (<Form.Group className="mb-3" controlId={id}>
-    <Form.Label>{label}</Form.Label>
-    <Form.Control
-      type={type}
-      id={id}
-      placeholder={placeholder ?? "Digite Aqui"}
-      onChange={onChange}
-      isValid={isValid}
-      isInvalid={!!errorMessage}
-      value={value}
-    />
-    <Form.Control.Feedback type="invalid">
-      {errorMessage}
-    </Form.Control.Feedback>
-  </Form.Group>)
+  return (
+    <Form.Group className="mb-3" controlId={id}>
+      <FormLabel variant={variant}>{label}</FormLabel>
+      <Form.Control
+        type={type}
+        id={id}
+        placeholder={placeholder ?? "Digite Aqui"}
+        onChange={onChange}
+        isValid={isValid}
+        isInvalid={!!errorMessage}
+        value={value}
+      />
+      <Form.Control.Feedback type="invalid">
+        {errorMessage}
+      </Form.Control.Feedback>
+    </Form.Group>)
 }
 
 export { Input }
