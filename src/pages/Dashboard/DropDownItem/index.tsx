@@ -13,7 +13,7 @@ interface IProps {
 
 function DropDownItem({ children, items }: IProps) {
   return (<Container>
-    <Item>
+    <Item label="Consultas">
       {children}
       <AiOutlineDown />
     </Item>

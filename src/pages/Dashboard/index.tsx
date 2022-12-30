@@ -35,7 +35,7 @@ function Dashboard() {
     </ImageContainer>
     <Items>
       <ItemColumn>
-        <Item onClick={() => navigate("/order")}>
+        <Item onClick={() => navigate("/order")} label="Novo Pedido">
           <FiShoppingBag/>
         </Item>
         <DropDownItem items={dropDownItems}>
@@ -43,18 +43,18 @@ function Dashboard() {
         </DropDownItem>
       </ItemColumn>
       <ItemColumn>
-        <Item>
+        <Item label="Clientes">
           <FiUserPlus />
         </Item>
-        <Item>
+        <Item label="Pedidos não Finalizados">
           <MdOutlineCancel />
         </Item>
       </ItemColumn>
       <ItemColumn>
-        <Item>
+        <Item label="Lista da Vez">
           <FiMenu />
         </Item>
-        <Item>
+        <Item label="Atualizar Sistema">
           <FiDownloadCloud />
         </Item>
       </ItemColumn>
