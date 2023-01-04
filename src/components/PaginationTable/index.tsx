@@ -70,7 +70,10 @@ function PaginationTable({
     <Container>
       <HeaderContainer>
         <div>
-          <InputGroupTable className="mb-3">
+          <InputGroupTable
+            className="mb-3"
+            clickEnterToSearch={clickEnterToSearch}
+          >
             <InputGroup.Text id="basic-addon1">
               <HiOutlineSearch size={22} color="var(--gray-3)"/>
             </InputGroup.Text>

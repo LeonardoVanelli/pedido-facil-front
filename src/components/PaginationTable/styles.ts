@@ -16,11 +16,19 @@ export const HeaderContainer = styled.div`
   }
 `
 
-export const InputGroupTable = styled(InputGroup)`
-  min-width: 500px;
+interface IInputGroupTableProps {
+  clickEnterToSearch: boolean
+}
+
+export const InputGroupTable = styled(InputGroup)<IInputGroupTableProps>`
+  min-width: 420px;
   white-space: nowrap;
-  width: auto;
-  margin-bottom: 0 !important;
+  width: auto;  
+  ${(props) => props.clickEnterToSearch
+    ? "margin-bottom: 0 !important;"
+    : "margin-bottom: 1.5rem !important;"
+}
+  
 
   span {
     background-color: transparent;
@@ -30,10 +38,13 @@ export const InputGroupTable = styled(InputGroup)`
   input {
     border-left: none;
     padding-left: 0;
+    padding-left: 8px;
+    font-size: 1rem;
 
     ::placeholder { 
       color: var(--gray-3);
       opacity: 1; /* Firefox */
+      font-size: 1rem;      
     }
   }
 `
