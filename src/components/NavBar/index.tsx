@@ -24,7 +24,7 @@ function NavBar() {
             <Nav.Link as={Link} to="order">
               Digitação de Pedido
             </Nav.Link>
-            <Nav.Link as={Link} to="#cliente">Cliente</Nav.Link>
+            <Nav.Link as={Link} to="client">Cliente</Nav.Link>
             <NavDropdown title="Consultas" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="#consulta/pedidos">
                 Pedidos

@@ -43,7 +43,7 @@ function Dashboard() {
         </DropDownItem>
       </ItemColumn>
       <ItemColumn>
-        <Item label="Clientes">
+        <Item onClick={() => navigate("/client")} label="Clientes">
           <FiUserPlus />
         </Item>
         <Item label="Pedidos não Finalizados">
