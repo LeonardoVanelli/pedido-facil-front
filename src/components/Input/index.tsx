@@ -9,7 +9,7 @@ interface IProps {
   isValid?: boolean
   value: string | number | string[] | undefined
   type?: string
-  errorMessage: string | undefined
+  errorMessage?: string | undefined
   placeholder?: string | undefined
   variant?: "login" | "form"
 }
