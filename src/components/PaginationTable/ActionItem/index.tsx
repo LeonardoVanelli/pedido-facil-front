@@ -6,9 +6,10 @@ import { IconContent } from "./styles"
 interface IProps {
   icon: IconType
   label: string
+  onClick?: () => void
 }
 
-function ActionItem({ icon, label }: IProps) {
+function ActionItem({ icon, label, onClick }: IProps) {
   const iconElement = createElement(icon, { size: 18 })
 
   return (
@@ -21,7 +22,7 @@ function ActionItem({ icon, label }: IProps) {
         </Tooltip>
       }
     >
-      <IconContent>
+      <IconContent onClick={onClick}>
         {iconElement}
       </IconContent>
     </OverlayTrigger>

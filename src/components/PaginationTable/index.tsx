@@ -14,13 +14,15 @@ interface IProps {
   onChangePage: (perPage: number, page: number, search: string | null) => void
   currentPage: number
   lastPage: number
+  onClickAddNewButton?: () => void
 }
 
 function PaginationTable({
   children,
   onChangePage,
   lastPage,
-  currentPage
+  currentPage,
+  onClickAddNewButton
 }: IProps) {
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [clickEnterToSearch, setClickEnterToSearch] = useState(false)
@@ -96,7 +98,9 @@ function PaginationTable({
             Pressione enter para pesquisar
           </Form.Text>
         </div>
-        <Button>Cadastrar Cliente</Button>
+        {onClickAddNewButton && (
+          <Button onClick={onClickAddNewButton}>Cadastrar Cliente</Button>
+        )}
       </HeaderContainer>
       <Table hover>
         {children}

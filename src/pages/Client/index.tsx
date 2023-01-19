@@ -1,4 +1,5 @@
 import { FiEdit2, FiEye, FiUser } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
 import { PaginationTable } from "../../components/PaginationTable"
 import { ActionItem } from "../../components/PaginationTable/ActionItem"
 import {
@@ -8,6 +9,8 @@ import {
 import { Content, TableHead, ContentTitle } from "./styles"
 
 function Client() {
+  const navigate = useNavigate()
+
   return <Content>
     <ContentTitle>
       <FiUser />
@@ -21,6 +24,7 @@ function Client() {
       ) => { console.log({ perPage, page, search }) }}
       currentPage={30}
       lastPage={30}
+      onClickAddNewButton={() => navigate("/client/create")}
     >
       <TableHead>
         <tr>
@@ -39,7 +43,11 @@ function Client() {
             <td>657.163.730-89</td>
             <td>marco@gmail.com</td>
             <ActionIconContainer>
-              <ActionItem icon={FiEdit2} label="Editar"/>
+              <ActionItem
+                icon={FiEdit2}
+                label="Editar"
+                onClick={() => navigate(`/client/${t}/edit`)}
+              />
               <ActionItem icon={FiEye} label="Visualizar"/>
             </ActionIconContainer>
           </tr>

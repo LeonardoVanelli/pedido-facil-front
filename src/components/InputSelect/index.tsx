@@ -1,51 +1,55 @@
-import { ChangeEventHandler } from "react"
+
 import { Form } from "react-bootstrap"
-import { FormLabel } from "./styles"
-import InputMask from "react-input-mask"
+import { FormLabel, Select } from "./styles"
+
+import "bootstrap/dist/css/bootstrap.css"
+
+interface IOptions {
+  value: string
+  label: string
+}
 
 interface IProps {
   id: string
   label: string
-  onChange?: ChangeEventHandler
+  setFieldValue?: (field: string, value: string) => Promise<void>
   isValid?: boolean
   value: string | number | string[] | undefined
   type?: string
   errorMessage?: string | undefined
   placeholder?: string | undefined
   variant?: "login" | "form"
-  mask?: string | Array<string | RegExp>
-  disabled?: boolean
+  options: IOptions[]
 }
 
-function Input ({
+function InputSelect ({
   id,
   label,
-  onChange,
+  setFieldValue,
   isValid,
   value,
   type,
   errorMessage,
   placeholder,
   variant,
-  mask,
-  disabled
+  options
 }: IProps) {
-  const as = mask ? InputMask : undefined
+  const onChange = async (selectedValue: IOptions) => {
+    if (setFieldValue) { await setFieldValue(id, selectedValue.value) }
+  }
 
   return (
-    <Form.Group className="mb-3" controlId={id}>
+    <Form.Group className="mb-3" controlId={id} >
       <FormLabel variant={variant}>{label}</FormLabel>
-      <Form.Control
-        as={as}
+      <Select
         type={type}
         id={id}
-        mask={mask ?? ""}
+        as={Select}
         placeholder={placeholder ?? "Digite Aqui"}
         onChange={onChange}
         isValid={isValid}
         isInvalid={!!errorMessage}
-        value={value}
-        disabled={disabled}
+        options={options}
       />
       <Form.Control.Feedback type="invalid">
         {errorMessage}
@@ -53,4 +57,4 @@ function Input ({
     </Form.Group>)
 }
 
-export { Input }
+export { InputSelect }

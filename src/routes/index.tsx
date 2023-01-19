@@ -7,6 +7,7 @@ import { NavBar } from "../components/NavBar"
 
 import { useUser } from "../hooks/useUser"
 import { Client } from "../pages/Client"
+import { CreateClient } from "../pages/Client/CreateClient"
 import { Dashboard } from "../pages/Dashboard"
 import { Login } from "../pages/Login"
 import { Order } from "../pages/Order"
@@ -29,6 +30,8 @@ function Routes () {
       <Route path="/" element={<Dashboard />} />
       <Route path="/order" element={<Order />} />
       <Route path="/client" element={<Client />} />
+      <Route path="/client/create" element={<CreateClient />} />
+      <Route path="/client/:clientId/edit" element={<CreateClient />} />
       <Route path="*" element={<Dashboard />} />
     </RoutesDom>
   </BrowserRouter>)
