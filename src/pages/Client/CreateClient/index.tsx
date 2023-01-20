@@ -1,9 +1,12 @@
+import { useEffect } from "react"
 import { useFormik } from "formik"
 import { Button, Col, Form, Row } from "react-bootstrap"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { Input } from "../../../components/Input"
 import { InputSelect } from "../../../components/InputSelect"
 
 import { Container, SessionTitle } from "./styles"
+import { RightDiv } from "../../../components/RightDiv"
 
 const ufOptions = [
   { value: "SC", label: "SC" },
@@ -17,13 +20,23 @@ const retailTypeOptions = [
   { value: "Cliente WEB", label: "Cliente WEB" }
 ]
 
-const storeOptions = [
-  { value: "Outlet Blumenau", label: "Outlet Blumenau" },
-  { value: "Shopping Morumbi", label: "Shopping Morumbi" },
-  { value: "Center Norte", label: "Center Norte" }
-]
-
 function CreateClient() {
+  const { clientId } = useParams()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+
+  const viewMode = pathname.includes("view")
+
+  console.log({ viewMode })
+
+  useEffect(() => {
+    if (clientId) {
+      console.log("Consulta cliente com o id: " + clientId)
+    }
+  }, [clientId])
+
+  const inputLabel = clientId ? "Salvar" : "Cadastrar Cliente"
+
   const formik = useFormik({
     initialValues: {
       document: "",
@@ -70,6 +83,7 @@ function CreateClient() {
               !formik.errors.document
             }
             errorMessage={formik.errors.document}
+            disabled={viewMode}
           />
         </Col>
 
@@ -82,6 +96,7 @@ function CreateClient() {
             value={formik.values.name}
             isValid={formik.touched.name && !formik.errors.name}
             errorMessage={formik.errors.name}
+            disabled={viewMode}
           />
         </Col>
 
@@ -95,6 +110,7 @@ function CreateClient() {
             value={formik.values.email}
             isValid={formik.touched.email && !formik.errors.email}
             errorMessage={formik.errors.email}
+            disabled={viewMode}
           />
         </Col>
       </Row>
@@ -107,6 +123,7 @@ function CreateClient() {
             value={formik.values.cell_phone}
             isValid={formik.touched.cell_phone && !formik.errors.cell_phone}
             errorMessage={formik.errors.cell_phone}
+            disabled={viewMode}
           />
         </Col>
 
@@ -119,6 +136,7 @@ function CreateClient() {
             value={formik.values.phone}
             isValid={formik.touched.phone && !formik.errors.phone}
             errorMessage={formik.errors.phone}
+            disabled={viewMode}
           />
         </Col>
 
@@ -132,6 +150,7 @@ function CreateClient() {
             value={formik.values.date}
             isValid={formik.touched.date && !formik.errors.date}
             errorMessage={formik.errors.date}
+            disabled={viewMode}
           />
         </Col>
       </Row>
@@ -149,6 +168,7 @@ function CreateClient() {
             value={formik.values.cep}
             isValid={formik.touched.cep && !formik.errors.cep}
             errorMessage={formik.errors.cep}
+            disabled={viewMode}
           />
         </Col>
         <Col md={2} lg={1} xl={1}>
@@ -164,9 +184,10 @@ function CreateClient() {
             value={formik.values.uf}
             isValid={formik.touched.uf && !formik.errors.uf}
             errorMessage={formik.errors.uf}
+            disabled={viewMode}
           />
         </Col>
-        <Col md={7} lg={4} xl={4}>
+        <Col md={7} lg={4} xl={3}>
           <Input
             id="city"
             label="Cidade"
@@ -175,9 +196,10 @@ function CreateClient() {
             value={formik.values.city}
             isValid={formik.touched.city && !formik.errors.city}
             errorMessage={formik.errors.city}
+            disabled={viewMode}
           />
         </Col>
-        <Col md={4} lg={4} xl={4}>
+        <Col md={4} lg={4} xl={3}>
           <Input
             id="street"
             label="Endereço"
@@ -186,6 +208,7 @@ function CreateClient() {
             value={formik.values.street}
             isValid={formik.touched.street && !formik.errors.street}
             errorMessage={formik.errors.street}
+            disabled={viewMode}
           />
         </Col>
         <Col md={2} lg={1} xl={1}>
@@ -197,6 +220,7 @@ function CreateClient() {
             value={formik.values.number}
             isValid={formik.touched.number && !formik.errors.number}
             errorMessage={formik.errors.number}
+            disabled={viewMode}
           />
         </Col>
         <Col md={3} lg={3} xl={3}>
@@ -208,6 +232,7 @@ function CreateClient() {
             value={formik.values.district}
             isValid={formik.touched.district && !formik.errors.district}
             errorMessage={formik.errors.district}
+            disabled={viewMode}
           />
         </Col>
         <Col md={3} lg={3} xl={3}>
@@ -219,6 +244,7 @@ function CreateClient() {
             value={formik.values.complement}
             isValid={formik.touched.complement && !formik.errors.complement}
             errorMessage={formik.errors.complement}
+            disabled={viewMode}
           />
         </Col>
       </Row>
@@ -238,6 +264,7 @@ function CreateClient() {
             value={formik.values.retail_type}
             isValid={formik.touched.retail_type && !formik.errors.retail_type}
             errorMessage={formik.errors.retail_type}
+            disabled={viewMode}
           />
         </Col>
         <Col md={4} lg={3} xl={2}>
@@ -257,23 +284,29 @@ function CreateClient() {
           />
         </Col>
         <Col md={3} lg={3} xl={3}>
-          <InputSelect
+          <Input
             id="store"
             label="Loja Cadastro"
-            options={storeOptions}
             placeholder="Digite Aqui"
-            setFieldValue={async (field: string, value: string) => {
-              console.log({ field, value })
-              await formik.setFieldValue(field, value)
-            }}
+            onChange={formik.handleChange}
             value={formik.values.store}
             isValid={formik.touched.store && !formik.errors.store}
             errorMessage={formik.errors.store}
+            disabled
           />
         </Col>
       </Row>
-
-      <Button type="submit">Criar Cliente</Button>
+      <RightDiv>
+        <Button
+          hidden={viewMode}
+          type="button"
+          variant="danger"
+          onClick={() => { navigate("/client") }}
+        >
+          Cancelar
+        </Button>
+        <Button hidden={viewMode} type="submit">{inputLabel}</Button>
+      </RightDiv>
 
     </Form>
   </Container>

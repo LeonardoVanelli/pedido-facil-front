@@ -38,7 +38,6 @@ function Input ({
       <Form.Control
         as={as}
         type={type}
-        id={id}
         mask={mask ?? ""}
         placeholder={placeholder ?? "Digite Aqui"}
         onChange={onChange}

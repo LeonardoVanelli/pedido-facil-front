@@ -17,14 +17,14 @@ export const HeaderContainer = styled.div`
 `
 
 interface IInputGroupTableProps {
-  clickEnterToSearch: boolean
+  $clickEnterToSearch: boolean
 }
 
 export const InputGroupTable = styled(InputGroup)<IInputGroupTableProps>`
   min-width: 420px;
   white-space: nowrap;
   width: auto;  
-  ${(props) => props.clickEnterToSearch
+  ${(props) => props.$clickEnterToSearch
     ? "margin-bottom: 0 !important;"
     : "margin-bottom: 1.5rem !important;"
 }

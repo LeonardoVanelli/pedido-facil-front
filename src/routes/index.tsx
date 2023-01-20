@@ -30,8 +30,9 @@ function Routes () {
       <Route path="/" element={<Dashboard />} />
       <Route path="/order" element={<Order />} />
       <Route path="/client" element={<Client />} />
-      <Route path="/client/create" element={<CreateClient />} />
       <Route path="/client/:clientId/edit" element={<CreateClient />} />
+      <Route path="/client/:clientId/view" element={<CreateClient />} />
+      <Route path="/client/create" element={<CreateClient />} />
       <Route path="*" element={<Dashboard />} />
     </RoutesDom>
   </BrowserRouter>)

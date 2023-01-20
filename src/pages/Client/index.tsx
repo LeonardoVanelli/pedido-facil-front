@@ -48,7 +48,11 @@ function Client() {
                 label="Editar"
                 onClick={() => navigate(`/client/${t}/edit`)}
               />
-              <ActionItem icon={FiEye} label="Visualizar"/>
+              <ActionItem
+                icon={FiEye}
+                label="Visualizar"
+                onClick={() => navigate(`/client/${t}/view`)}
+              />
             </ActionIconContainer>
           </tr>
         ))}

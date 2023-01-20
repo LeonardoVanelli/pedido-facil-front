@@ -20,6 +20,7 @@ interface IProps {
   placeholder?: string | undefined
   variant?: "login" | "form"
   options: IOptions[]
+  disabled?: boolean
 }
 
 function InputSelect ({
@@ -32,7 +33,8 @@ function InputSelect ({
   errorMessage,
   placeholder,
   variant,
-  options
+  options,
+  disabled
 }: IProps) {
   const onChange = async (selectedValue: IOptions) => {
     if (setFieldValue) { await setFieldValue(id, selectedValue.value) }
@@ -43,13 +45,13 @@ function InputSelect ({
       <FormLabel variant={variant}>{label}</FormLabel>
       <Select
         type={type}
-        id={id}
         as={Select}
         placeholder={placeholder ?? "Digite Aqui"}
         onChange={onChange}
         isValid={isValid}
         isInvalid={!!errorMessage}
         options={options}
+        isDisabled={disabled}
       />
       <Form.Control.Feedback type="invalid">
         {errorMessage}
