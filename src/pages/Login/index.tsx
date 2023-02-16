@@ -7,6 +7,7 @@ import { Input } from "../../components/Input"
 import { Yup } from "../../helpers/yup"
 import { useUser } from "../../hooks/useUser"
 import { toastError, toastSuccess } from "../../helpers/toast"
+import { createSessionService } from "../../services"
 
 const initialValues = {
   email: "",
@@ -14,8 +15,8 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required().label("Usuário"),
-  password: Yup.string().required().label("Senha")
+  email: Yup.string().required().label("Usuário"),
+  password: Yup.string().label("Senha")
 })
 
 function Login () {
@@ -26,11 +27,16 @@ function Login () {
     validationSchema,
     isInitialValid: false,
     validateOnChange: false,
-    onSubmit: (values) => {
-      if (values.email === "admin@admin.com" && values.password === "admin") {
-        login({ id: 1, name: "Admin de Admin" })
+    onSubmit: async (values) => {
+      const { email, password } = values
+
+      try {
+        const session = await createSessionService.execute(email, password)
+        const { id, name } = session.user
+
+        login({ id, name })
         toastSuccess("Login efetuado com sucesso")
-      } else {
+      } catch (error) {
         toastError("Login ou senha inválido")
       }
     }
