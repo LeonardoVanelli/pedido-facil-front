@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios"
+import { setToken } from "."
 import { ICreateSessionService } from "./interfaces/ICreateSessionService"
 
 class CreateSessionService {
@@ -15,6 +16,8 @@ class CreateSessionService {
         login: email,
         password
       })
+
+      setToken(response.data.token)
 
       return response.data
     } catch (error: unknown) {

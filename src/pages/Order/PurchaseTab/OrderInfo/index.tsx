@@ -1,23 +1,27 @@
 import { Form } from "react-bootstrap"
+import { formatToLocalCurrency } from "../../../../helpers/currency"
+import { useOrder } from "../../hooks/useCarts"
 import { Container, TabInfo, Divisor, LabelInfo } from "./styles"
 
 function OrderInfo() {
+  const { sale } = useOrder()
+
   return <Container>
     <TabInfo maxWidth="250">
       <div>
         <div>
           <LabelInfo color="blue">Venda</LabelInfo>
-          <span>04</span>
+          <span>{sale.amount}</span>
         </div>
         <div>
           <LabelInfo color="red">Troca</LabelInfo>
-          <span>0</span>
+          <span>{sale.exchange_amount}</span>
         </div>
       </div>
       <div>
         <div>
           <LabelInfo color="blue">Liquida</LabelInfo>
-          <span>04</span>
+          <span>{sale.net_amount}</span>
         </div>
       </div>
     </TabInfo>
@@ -26,11 +30,11 @@ function OrderInfo() {
       <div>
         <div>
           <LabelInfo color="blue">Valor Bruto</LabelInfo>
-          <span>R$ 299,96</span>
+          <span>{formatToLocalCurrency(sale.gross_valeu)}</span>
         </div>
         <div>
           <LabelInfo color="red">Valor Troca</LabelInfo>
-          <span>R$ 0,00</span>
+          <span>{formatToLocalCurrency(sale.exchange_value)}</span>
         </div>
       </div>
     </TabInfo>
@@ -52,7 +56,7 @@ function OrderInfo() {
       <div>
         <div>
           <label>Valor do Pedido</label>
-          <span>R$ 299,96</span>
+          <span>{formatToLocalCurrency(sale.sale_price)}</span>
         </div>
         <div>
           <Form.Check

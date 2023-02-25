@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css"
 import "react-toastify/dist/ReactToastify.css"
+import "react-alert-confirm/lib/style.css"
 import { ToastContainer } from "react-toastify"
 
 import { Providers } from "./context"

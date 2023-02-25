@@ -15,6 +15,8 @@ interface IProps {
   variant?: "login" | "form"
   mask?: string | Array<string | RegExp>
   disabled?: boolean
+  onBlur?: () => void
+  onKeyUp?: (e: React.KeyboardEvent) => void
 }
 
 function Input ({
@@ -28,7 +30,9 @@ function Input ({
   placeholder,
   variant,
   mask,
-  disabled
+  disabled,
+  onBlur,
+  onKeyUp
 }: IProps) {
   const as = mask ? InputMask : undefined
 
@@ -45,6 +49,8 @@ function Input ({
         isInvalid={!!errorMessage}
         value={value}
         disabled={disabled}
+        onBlur={onBlur}
+        onKeyUp={onKeyUp}
       />
       <Form.Control.Feedback type="invalid">
         {errorMessage}

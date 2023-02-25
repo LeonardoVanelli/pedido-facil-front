@@ -59,6 +59,8 @@
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/strict-boolean-expressions": 0,
         "@typescript-eslint/consistent-type-assertions": "off",
-        "@typescript-eslint/space-before-function-paren": "off"
+        "@typescript-eslint/space-before-function-paren": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-floating-promises": "off"
     }
 }
