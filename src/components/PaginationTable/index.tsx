@@ -12,6 +12,7 @@ import {
 interface IProps {
   children: ReactElement | ReactElement[]
   onChangePage: (perPage: number, page: number, search: string | null) => void
+  onSearch?: (search: string | null) => Promise<void>
   currentPage: number
   lastPage: number
   onClickAddNewButton?: () => void
@@ -22,7 +23,8 @@ function PaginationTable({
   onChangePage,
   lastPage,
   currentPage,
-  onClickAddNewButton
+  onClickAddNewButton,
+  onSearch
 }: IProps) {
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [clickEnterToSearch, setClickEnterToSearch] = useState(false)
@@ -55,12 +57,14 @@ function PaginationTable({
 
   const handleSearchValue = (e: React.KeyboardEvent<any>) => {
     if (e.key === "Enter") {
-      let searchValueEvent = e.currentTarget.value
+      let searchValueEvent: string | null = e.currentTarget.value
       if (searchValueEvent === "") {
         searchValueEvent = null
       }
       setSearchValue(searchValueEvent)
-      onChangePage(perPage, currentPage, searchValueEvent)
+      if (onSearch) {
+        onSearch(searchValueEvent)
+      }
       setClickEnterToSearch(false)
     }
   }
@@ -72,28 +76,30 @@ function PaginationTable({
     <Container>
       <HeaderContainer>
         <div>
-          <InputGroupTable
-            className="mb-3"
-            $clickEnterToSearch={clickEnterToSearch}
-          >
-            <InputGroup.Text id="basic-addon1">
-              <HiOutlineSearch size={22} color="var(--gray-3)"/>
-            </InputGroup.Text>
-            <Form.Control
-              size="lg"
-              placeholder="Pesquise por nome, CPF ou código do cliente"
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) => {
-                if (e.currentTarget.value === "" && searchValue === null) {
-                  setClickEnterToSearch(false)
-                } else {
-                  setClickEnterToSearch(true)
-                }
-              }}
-              onKeyUp={e => handleSearchValue(e)}
-            />
-          </InputGroupTable>
+          {onSearch && (
+            <InputGroupTable
+              className="mb-3"
+              $clickEnterToSearch={clickEnterToSearch}
+            >
+              <InputGroup.Text id="basic-addon1">
+                <HiOutlineSearch size={22} color="var(--gray-3)"/>
+              </InputGroup.Text>
+              <Form.Control
+                size="lg"
+                placeholder="Pesquise por nome, CPF ou código do cliente"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={(e) => {
+                  if (e.currentTarget.value === "" && searchValue === null) {
+                    setClickEnterToSearch(false)
+                  } else {
+                    setClickEnterToSearch(true)
+                  }
+                }}
+                onKeyUp={e => handleSearchValue(e)}
+              />
+            </InputGroupTable>
+          )}
           <Form.Text className="text-muted" hidden={!clickEnterToSearch}>
             Pressione enter para pesquisar
           </Form.Text>

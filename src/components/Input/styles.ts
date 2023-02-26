@@ -1,4 +1,4 @@
-import { Form } from "react-bootstrap"
+import { Form, InputGroup } from "react-bootstrap"
 import styled from "styled-components"
 
 interface IFormLabelProps {
@@ -8,4 +8,8 @@ export const FormLabel = styled(Form.Label)<IFormLabelProps>`
   ${props => !props.variant || props.variant === "form"
     ? "color: var(--primary-5)"
     : ""}
+`
+
+export const InputGroupText = styled(InputGroup.Text)`
+  cursor: pointer;
 `
