@@ -9,7 +9,7 @@ interface IProps {
   showModal: boolean
   onHideModal: () => void
   clients: IListClientService[]
-  handleSelectClient: (id: string, name: string) => void
+  handleSelectClient: (id: string, name: string, document: string) => void
   currentPage: number
   lastPage: number
   onChangePage: (perPage: number, page: number) => Promise<void>
@@ -68,7 +68,8 @@ function ListClientModal({
                 onClick={() => {
                   handleSelectClient(
                     client.id,
-                    client.name
+                    client.name,
+                    client.document
                   )
                 }}
               >

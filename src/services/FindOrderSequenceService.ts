@@ -1,14 +1,11 @@
 import { AxiosInstance } from "axios"
-import { IFindClientService } from "./interfaces/IFindClientService"
 
-class FindClientService {
+class FindOrderSequenceService {
   constructor(private readonly api: AxiosInstance) {}
 
-  private readonly url = "/client/"
+  private readonly url = "/seles/getOrderId"
 
-  async execute(
-    document: string
-  ): Promise<IFindClientService> {
+  async execute(): Promise<string> {
     const user_token = sessionStorage.getItem("user_token")
     if (!user_token) {
       throw new Error("Token not found")
@@ -16,7 +13,7 @@ class FindClientService {
 
     try {
       const response =
-      await this.api.get<IFindClientService>(this.url + document, {
+      await this.api.get<string>(this.url, {
         headers: { Authorization: `Bearer ${user_token}` }
       })
 
@@ -28,4 +25,4 @@ class FindClientService {
   }
 }
 
-export { FindClientService }
+export { FindOrderSequenceService }

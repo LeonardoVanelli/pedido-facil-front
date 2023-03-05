@@ -137,11 +137,6 @@ function OrderProduct() {
             label="Código de Barra/Produto"
             onChange={formik.handleChange}
             value={formik.values.product_code}
-            isValid={
-              formik.touched.product_code &&
-              !formik.errors.product_code
-            }
-            errorMessage={formik.errors.product_code}
             onKeyUp={e => {
               if (e.key === "Enter") { formik.handleSubmit() }
             }}
@@ -156,8 +151,6 @@ function OrderProduct() {
             placeholder=""
             onChange={formik.handleChange}
             value={formik.values.quantity}
-            isValid={formik.touched.quantity && !formik.errors.quantity}
-            errorMessage={formik.errors.quantity}
           />
         </Col>
 

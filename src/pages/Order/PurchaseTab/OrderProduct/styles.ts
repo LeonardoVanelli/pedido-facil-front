@@ -9,7 +9,7 @@ export const TableHead = styled.thead`
 `
 
 export const TableContent = styled.div`
-  max-height: 190px;
+  max-height: 350px;
   overflow-y: scroll;
   padding-right: 15px;
   /* overflow-x: hidden; */

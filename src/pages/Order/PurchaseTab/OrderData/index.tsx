@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useFormik } from "formik"
 import { Col, Form, Row } from "react-bootstrap"
 import { Input } from "../../../../components/Input"
@@ -38,22 +38,22 @@ function OrderData() {
   const [clients, setClients] =
     useState<IResponsePagination<IListClientService>>(initialClients)
 
-  const { sale } = useOrder()
+  const { sale, changeClient, changeSeller } = useOrder()
 
   const formik = useFormik({
     initialValues: {
       clientDocument: "",
-      clientName: "",
-      clientCode: "",
-      sellerName: "",
-      sellerCode: "",
-      date: sale.date.toISOString().split("T")[0],
-      ticket: ""
+      sellerCode: ""
     },
     onSubmit: values => {
       console.log(values)
     }
   })
+
+  useEffect(() => {
+    formik.setFieldValue("clientDocument", sale.client?.document ?? "")
+    formik.setFieldValue("sellerCode", sale.seller?.id ?? "")
+  }, [sale])
 
   const listClient = async (
     page: number,
@@ -77,11 +77,14 @@ function OrderData() {
   const findClient = async () => {
     try {
       const { clientDocument } = formik.values
-      if (clientDocument.length === 14) {
-        const client =
-        await findClientService.execute(clientDocument)
+      const formattedDocument = clientDocument
+        .replace(/\W|_/g, "")
 
-        setClient(client.id, client.name)
+      if (formattedDocument.length === 11) {
+        const client =
+        await findClientService.execute(formattedDocument)
+
+        setClient(client.id, client.name, client.document)
       }
     } catch (error) {
       toastError("Cliente não encontrado")
@@ -91,9 +94,11 @@ function OrderData() {
     }
   }
 
-  function setClient(id: string, name: string) {
+  function setClient(id: string, name: string, document: string) {
     formik.setFieldValue("clientCode", id)
     formik.setFieldValue("clientName", name)
+
+    changeClient(id, name, document)
 
     setShowModalClient(false)
     setClients(initialClients)
@@ -140,6 +145,8 @@ function OrderData() {
   function setSeller(id: string, name: string) {
     formik.setFieldValue("sellerCode", id)
     formik.setFieldValue("sellerName", name)
+
+    changeSeller(id, name)
     setShowModalSeller(false)
   }
 
@@ -174,10 +181,7 @@ function OrderData() {
             id="clientName"
             label="Nome do Cliente"
             placeholder=""
-            onChange={formik.handleChange}
-            value={formik.values.clientName}
-            isValid={formik.touched.clientName && !formik.errors.clientName}
-            errorMessage={formik.errors.clientName}
+            value={sale.client?.name ?? ""}
             disabled
           />
         </Col>
@@ -187,10 +191,7 @@ function OrderData() {
             id="clientCode"
             label="Código do Cliente"
             placeholder=""
-            onChange={formik.handleChange}
-            value={formik.values.clientCode}
-            isValid={formik.touched.clientCode && !formik.errors.clientCode}
-            errorMessage={formik.errors.clientCode}
+            value={sale.client?.id ?? ""}
             disabled
           />
         </Col>
@@ -217,7 +218,7 @@ function OrderData() {
           <Input
             id="sellerName"
             label="Nome do Vendedor"
-            value={formik.values.sellerName}
+            value={sale.seller?.name ?? ""}
             disabled
           />
         </Col>
@@ -228,7 +229,7 @@ function OrderData() {
             label="Data"
             type="date"
             placeholder="Digite Aqui"
-            value={formik.values.date}
+            value={new Date(sale.date).toISOString().split("T")[0]}
             disabled
           />
         </Col>
@@ -238,7 +239,7 @@ function OrderData() {
             id="ticket"
             label="Pedido"
             placeholder=""
-            value={formik.values.ticket}
+            value={sale.order_id ?? ""}
             disabled
           />
         </Col>
@@ -267,8 +268,8 @@ function OrderData() {
       onChangePage={async (perPage: number, page: number) =>
         await listClient(page, perPage)
       }
-      handleSelectClient={(id, name) => {
-        setClient(id, name)
+      handleSelectClient={(id, name, document) => {
+        setClient(id, name, document)
       }}
       onSearch={async (search: string | null) => {
         await listClient(1, 15, search)

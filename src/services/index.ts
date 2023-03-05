@@ -1,6 +1,7 @@
 import axios from "axios"
 import { CreateSessionService } from "./CreateSessionService"
 import { FindClientService } from "./FindClientService"
+import { FindOrderSequenceService } from "./FindOrderSequenceService"
 import { ListClientService } from "./ListClientService"
 import { ListProductService } from "./ListProductService"
 import { ListSellerService } from "./ListSellerService"
@@ -18,11 +19,13 @@ const listProductService = new ListProductService(api)
 const findClientService = new FindClientService(api)
 const listSellerService = new ListSellerService(api)
 const listClientService = new ListClientService(api)
+const findOrderSequenceService = new FindOrderSequenceService(api)
 
 export {
   createSessionService,
   listProductService,
   findClientService,
   listSellerService,
-  listClientService
+  listClientService,
+  findOrderSequenceService
 }

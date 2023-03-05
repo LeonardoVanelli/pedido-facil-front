@@ -5,6 +5,7 @@ import {
   useState,
   useEffect
 } from "react"
+import { findOrderSequenceService } from "../../../services"
 
 interface TransactionsProviderProps {
   children: ReactNode
@@ -64,25 +65,30 @@ interface CartContextData {
   products: IProduct[]
   addProduct: (product: IProductAdd) => void
   removeProduct: (id: number) => void
+  changeClient: (id: string, name: string, document: string) => void
+  changeSeller: (id: string, name: string) => void
+  cancelSale: () => void
 }
 
 const UserContext = createContext<CartContextData>({} as CartContextData)
 
+const initialSale = {
+  date: new Date(),
+  amount: 0,
+  exchange_amount: 0,
+  exchange_value: 0,
+  gross_valeu: 0,
+  net_amount: 0,
+  sale_price: 0
+}
+
 export function OrderProvider({
   children
 }: TransactionsProviderProps): JSX.Element {
-  const [sale, setSale] = useState<ISale>({
-    date: new Date(),
-    amount: 0,
-    exchange_amount: 0,
-    exchange_value: 0,
-    gross_valeu: 0,
-    net_amount: 0,
-    sale_price: 0
-  })
+  const [sale, setSale] = useState<ISale>(initialSale)
   const [products, setProducts] = useState<IProduct[]>([])
 
-  useEffect(() => {
+  async function changeSale(productsChanged: IProduct[]) {
     const saleInfo: ISale = {
       ...sale,
       amount: 0,
@@ -93,7 +99,13 @@ export function OrderProvider({
       sale_price: 0
     }
 
-    products.forEach((prod) => {
+    if (productsChanged.length === 1 && !sale.order_id) {
+      const newOrderId = await findOrderSequenceService.execute()
+
+      saleInfo.order_id = newOrderId
+    }
+
+    productsChanged.forEach((prod) => {
       if (!prod.exchange) {
         saleInfo.amount += prod.quantity
         saleInfo.gross_valeu += prod.price * prod.quantity
@@ -107,7 +119,33 @@ export function OrderProvider({
     }, 0)
 
     setSale(saleInfo)
+  }
+
+  useEffect(() => {
+    if (products.length > 0) {
+      sessionStorage.setItem("products", JSON.stringify(products))
+    }
   }, [products])
+
+  useEffect(() => {
+    if (sale.order_id) {
+      sessionStorage.setItem("sale", JSON.stringify(sale))
+    }
+
+    console.log({ sale })
+  }, [sale])
+
+  useEffect(() => {
+    const saleSession = sessionStorage.getItem("sale")
+    const productsSession = sessionStorage.getItem("products")
+
+    if (saleSession) {
+      setSale(JSON.parse(saleSession))
+    }
+    if (productsSession) {
+      setProducts(JSON.parse(productsSession))
+    }
+  }, [])
 
   const addProduct = (productAdd: IProductAdd) => {
     let quantity = productAdd.quantity
@@ -127,7 +165,10 @@ export function OrderProvider({
       valueNet
 
     }
-    setProducts([...products, product])
+
+    const newProducts = [...products, product]
+    setProducts(newProducts)
+    changeSale(newProducts)
   }
 
   const removeProduct = (id: number) => {
@@ -139,13 +180,49 @@ export function OrderProvider({
     newProducts[productToRemoveIndex].canceled = true
     newProducts[productToRemoveIndex].quantity = 0
     setProducts(newProducts)
+    changeSale(newProducts)
+  }
+
+  const changeClient = (id: string, name: string, document: string) => {
+    const client = {
+      id,
+      name,
+      document
+    }
+
+    setSale({
+      ...sale,
+      client
+    })
+  }
+
+  const changeSeller = (id: string, name: string) => {
+    const seller = {
+      id,
+      name
+    }
+
+    setSale({
+      ...sale,
+      seller
+    })
+  }
+
+  const cancelSale = () => {
+    setSale(initialSale)
+    setProducts([])
+    sessionStorage.removeItem("products")
+    sessionStorage.removeItem("sale")
   }
 
   const value = {
     sale,
     addProduct,
     removeProduct,
-    products
+    products,
+    changeClient,
+    changeSeller,
+    cancelSale
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
