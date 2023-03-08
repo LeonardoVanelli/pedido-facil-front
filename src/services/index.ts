@@ -2,7 +2,10 @@ import axios from "axios"
 import { CreateSessionService } from "./CreateSessionService"
 import { FindClientService } from "./FindClientService"
 import { FindOrderSequenceService } from "./FindOrderSequenceService"
+import { ListCardAdministratorService } from "./ListCardAdministratorService"
 import { ListClientService } from "./ListClientService"
+import { ListPaymentMethodService } from "./ListPaymentMethodService"
+import { ListPaymentTypeService } from "./ListPaymentTypeService"
 import { ListProductService } from "./ListProductService"
 import { ListSellerService } from "./ListSellerService"
 
@@ -20,6 +23,9 @@ const findClientService = new FindClientService(api)
 const listSellerService = new ListSellerService(api)
 const listClientService = new ListClientService(api)
 const findOrderSequenceService = new FindOrderSequenceService(api)
+const listPaymentTypeService = new ListPaymentTypeService(api)
+const listPaymentMethodService = new ListPaymentMethodService(api)
+const listCardAdministratorService = new ListCardAdministratorService(api)
 
 export {
   createSessionService,
@@ -27,5 +33,8 @@ export {
   findClientService,
   listSellerService,
   listClientService,
-  findOrderSequenceService
+  findOrderSequenceService,
+  listPaymentTypeService,
+  listPaymentMethodService,
+  listCardAdministratorService
 }

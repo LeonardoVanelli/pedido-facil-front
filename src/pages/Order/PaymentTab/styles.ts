@@ -2,11 +2,10 @@ import styled from "styled-components"
 
 export const Container = styled.div`
   margin-top: 15px;
-`
-
-export const PaymentInfos = styled.div`
   display: flex;
+  gap: 20px;
 
   flex-direction: row;
-  justify-content: space-between;
 `
+
+export const PaymentInfos = styled.div``

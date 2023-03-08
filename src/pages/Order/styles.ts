@@ -68,3 +68,20 @@ export const OrderTabLabel = styled.label`
   white-space: nowrap;
   color: var(--primary-4);
 `
+
+export const OrderFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  flex: 1;
+`
+
+export const OrderContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  flex: 1;
+`

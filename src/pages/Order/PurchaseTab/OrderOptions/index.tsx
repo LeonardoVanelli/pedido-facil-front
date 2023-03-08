@@ -6,9 +6,11 @@ import { toastSuccess } from "../../../../helpers/toast"
 
 interface IProps {
   goNextPage: () => void
+  goPreviousPage: () => void
+  activeTab: string
 }
 
-function OrderOptions({ goNextPage }: IProps) {
+function OrderOptions({ goNextPage, activeTab, goPreviousPage }: IProps) {
   const { cancelSale } = useOrder()
 
   const handleClickCancel = async () => {
@@ -24,13 +26,30 @@ function OrderOptions({ goNextPage }: IProps) {
   }
 
   return <Container>
-    <Button
-      size="lg"
-      variant="danger"
-      onClick={() => { handleClickCancel() }}>
+    {activeTab === "purchase"
+      ? (
+        <>
+          <Button
+            size="lg"
+            variant="danger"
+            onClick={() => { handleClickCancel() }}
+          >
         Cancelar
-    </Button>
-    <Button size="lg" onClick={goNextPage}>Próximo</Button>
+          </Button>
+          <Button size="lg" onClick={goNextPage}>Próximo</Button>
+        </>)
+      : (
+        <>
+          <Button
+            variant="outline-primary"
+            size="lg"
+            type="button"
+            onClick={goPreviousPage}
+          >
+        Voltar
+          </Button>
+          <Button size="lg">Finalizar</Button>
+        </>)}
   </Container>
 }
 

@@ -1,10 +1,11 @@
 
+import { useState, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { FormLabel, Select } from "./styles"
 
 import "bootstrap/dist/css/bootstrap.css"
 
-interface IOptions {
+export interface IOptions {
   value: string
   label: string
 }
@@ -36,8 +37,16 @@ function InputSelect ({
   options,
   disabled
 }: IProps) {
+  const [selectedOption, setSelectedOption] = useState<IOptions>()
+
+  useEffect(() => {
+    const selected = options.find(option => option.value === value)
+    if (selected !== selectedOption) { setSelectedOption(selected) }
+  }, [value, selectedOption, options])
+
   const onChange = async (selectedValue: IOptions) => {
     if (setFieldValue) { await setFieldValue(id, selectedValue.value) }
+    setSelectedOption(selectedValue)
   }
 
   return (
@@ -48,6 +57,7 @@ function InputSelect ({
         as={Select}
         placeholder={placeholder ?? "Digite Aqui"}
         onChange={onChange}
+        value={selectedOption}
         isValid={isValid}
         isInvalid={!!errorMessage}
         options={options}

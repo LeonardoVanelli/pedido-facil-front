@@ -53,7 +53,7 @@ function OrderData() {
   useEffect(() => {
     formik.setFieldValue("clientDocument", sale.client?.document ?? "")
     formik.setFieldValue("sellerCode", sale.seller?.id ?? "")
-  }, [sale])
+  }, [sale]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const listClient = async (
     page: number,

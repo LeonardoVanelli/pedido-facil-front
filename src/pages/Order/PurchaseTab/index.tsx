@@ -1,8 +1,6 @@
 import { OrderData } from "./OrderData"
-import { OrderInfo } from "./OrderInfo"
-import { OrderOptions } from "./OrderOptions"
 import { OrderProduct } from "./OrderProduct"
-import { Container, OrderFooter } from "./styles"
+import { Container } from "./styles"
 
 interface IProps {
   goNextPage: () => void
@@ -10,12 +8,10 @@ interface IProps {
 
 function PurchaseTab({ goNextPage }: IProps) {
   return <Container>
-    <OrderData />
-    <OrderProduct />
-    <OrderFooter>
-      <OrderInfo />
-      <OrderOptions goNextPage={goNextPage}/>
-    </OrderFooter>
+    <div>
+      <OrderData />
+      <OrderProduct />
+    </div>
   </Container>
 }
 

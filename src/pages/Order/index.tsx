@@ -2,13 +2,17 @@ import { useState } from "react"
 import { OrderProvider } from "./hooks/useCarts"
 import { PaymentTab } from "./PaymentTab"
 import { PurchaseTab } from "./PurchaseTab"
+import { OrderInfo } from "./PurchaseTab/OrderInfo"
+import { OrderOptions } from "./PurchaseTab/OrderOptions"
 import {
   Container,
   OrderTabs,
   OrderTabLine,
   OrderTab,
   OrderTabCircle,
-  OrderTabLabel
+  OrderTabLabel,
+  OrderFooter,
+  OrderContent
 } from "./styles"
 
 function Order() {
@@ -37,9 +41,19 @@ function Order() {
         </OrderTab>
         <OrderTabLine enabled={activeTab === "payment"}/>
       </OrderTabs>
-      {activeTab === "purchase"
-        ? <PurchaseTab goNextPage={goNextPage}/>
-        : <PaymentTab goPreviousPage={goPreviousPage}/> }
+      <OrderContent>
+        {activeTab === "purchase"
+          ? <PurchaseTab goNextPage={goNextPage}/>
+          : <PaymentTab /> }
+        <OrderFooter>
+          <OrderInfo />
+          <OrderOptions
+            goNextPage={goNextPage}
+            goPreviousPage={goPreviousPage}
+            activeTab={activeTab}
+          />
+        </OrderFooter>
+      </OrderContent>
     </OrderProvider>
   </Container>
 }

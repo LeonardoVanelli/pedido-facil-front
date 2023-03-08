@@ -1,18 +1,9 @@
-import { OrderInfo } from "./OrderInfo"
 import { SelectMethods } from "./SelectMethods"
-import { Container, PaymentInfos } from "./styles"
+import { Container } from "./styles"
 
-interface IProps {
-  goPreviousPage: () => void
-}
-
-function PaymentTab({ goPreviousPage }: IProps) {
+function PaymentTab() {
   return <Container>
     <SelectMethods />
-    <PaymentInfos>
-      <div />
-      <OrderInfo goPreviousPage={goPreviousPage}></OrderInfo>
-    </PaymentInfos>
   </Container>
 }
 
