@@ -11,7 +11,18 @@ interface IProps {
 }
 
 function OrderOptions({ goNextPage, activeTab, goPreviousPage }: IProps) {
-  const { cancelSale } = useOrder()
+  const { cancelSale, finishSale } = useOrder()
+
+  const onClickFinishSale = async (): Promise<void> => {
+    const [isOk] = await AlertConfirm({
+      title: "Deseja finalizar a venda?",
+      okText: "Sim",
+      cancelText: "Não"
+    })
+    if (isOk) {
+      finishSale()
+    }
+  }
 
   const handleClickCancel = async () => {
     const [isOk] = await AlertConfirm({
@@ -48,7 +59,7 @@ function OrderOptions({ goNextPage, activeTab, goPreviousPage }: IProps) {
           >
         Voltar
           </Button>
-          <Button size="lg">Finalizar</Button>
+          <Button size="lg" onClick={onClickFinishSale}>Finalizar</Button>
         </>)}
   </Container>
 }

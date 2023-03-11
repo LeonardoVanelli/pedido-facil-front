@@ -1,10 +1,11 @@
+import { addHours } from "date-fns"
 import { useFormik } from "formik"
 import { useEffect } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { Input } from "../../../../../../components/Input"
 import { InputSelect, IOptions } from "../../../../../../components/InputSelect"
 import { useOrder } from "../../../../hooks/useCarts"
-import { findEnabled } from "./inputDisabled"
+import { findEnabled, findRequired } from "./inputDisabled"
 
 import { Container, ColButtons } from "./styles"
 
@@ -16,11 +17,9 @@ interface IProps {
 
 const initialValues = {
   type_typing: "$$",
-  instalments: "",
   expiration_date: "",
   value: "",
   title_number: "",
-  card_approval_number: "",
   instalments_card: "",
   bank: "",
   agency: "",
@@ -28,7 +27,6 @@ const initialValues = {
   administrator_code: "",
   store_code: "",
   type: "",
-  order_id: "",
   currency: "",
   approval: ""
 }
@@ -38,12 +36,78 @@ function TypedStore({
   typePaymentOptions,
   cardAdministratorOptions
 }: IProps) {
-  const { sale } = useOrder()
+  const { sale, addPayment } = useOrder()
 
   const formik = useFormik({
     initialValues,
-    onSubmit: (value) => {
-      console.log(value)
+    onSubmit: (value, { setFieldError }) => {
+      const {
+        expiration_date,
+        administrator_code,
+        agency,
+        approval,
+        bank,
+        current_account,
+        instalments_card,
+        title_number,
+        type,
+        value: valueInput
+      } = value
+
+      let hasError = false
+
+      if (formik.values.type === "") {
+        setFieldError("type", "Tipo de pagamento é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "agency") && !agency) {
+        setFieldError("agency", "Agência é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "administrator_code") &&
+      !administrator_code) {
+        setFieldError("administrator_code",
+          "Administradora é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "approval") && !approval) {
+        setFieldError("approval", "Autorização é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "bank") && !bank) {
+        setFieldError("bank", "Banco é obrigatório")
+      }
+      if (findRequired(formik.values.type, "current_account") &&
+      !current_account) {
+        setFieldError("current_account", "Conta corrente é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "instalments_card") &&
+      !instalments_card) {
+        setFieldError("instalments_card", "Parc. Cartão é obrigatório")
+        hasError = true
+      }
+      if (findRequired(formik.values.type, "title_number") && !title_number) {
+        setFieldError("title_number", "Titulo(DOC) é obrigatório")
+        hasError = true
+      }
+
+      if (hasError) return
+
+      const dateExpiration = addHours(new Date(expiration_date), 3)
+      addPayment({
+        expiration_date: dateExpiration,
+        value: Number(valueInput),
+        administrator_code,
+        agency,
+        approval,
+        bank,
+        current_account,
+        instalments: instalments_card,
+        instalments_card: Number(instalments_card),
+        title_number,
+        type
+      })
     }
   })
 
@@ -123,16 +187,16 @@ function TypedStore({
         </Col>
         <Col md={1} lg={1} xl={1}>
           <Input
-            id="instalments"
-            label="Parcela"
+            id="instalments_card"
+            label="Parc. Cartão"
             onChange={formik.handleChange}
-            value={formik.values.instalments}
+            value={formik.values.instalments_card}
             isValid={
-              formik.touched.instalments &&
-              !formik.errors.instalments
+              formik.touched.instalments_card &&
+              !formik.errors.instalments_card
             }
-            errorMessage={formik.errors.instalments}
-            disabled={findEnabledInput("instalments")}
+            errorMessage={formik.errors.instalments_card}
+            disabled={findEnabledInput("instalments_card")}
           />
         </Col>
         <Col md={2} lg={2} xl={2}>

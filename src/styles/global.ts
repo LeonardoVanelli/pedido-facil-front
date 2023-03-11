@@ -25,6 +25,20 @@ const GlobalStyle = createGlobalStyle`
     * {
         font-family: 'Inter', sans-serif;
     }  
+
+    .form-control.is-invalid {
+        background-image: none;
+        //border-color: hsl(0, 0%, 80%);
+        z-index: 0 !important;
+        padding-right: 10px;
+        border-radius: 0.375rem;
+    }
+    .form-control.is-valid {
+        background-image: none;
+        border-color: hsl(0, 0%, 80%);
+        z-index: 0 !important;
+        padding-right: 10px;
+    }
 `
 
 export { GlobalStyle }

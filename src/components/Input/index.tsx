@@ -57,16 +57,19 @@ function Input ({
           onKeyUp={onKeyUp}
         />
 
-        <InputGroupText
-          hidden={!onClickSearch}
-          onClick={onClickSearch}
-        >
-          <BiSearch />
-        </InputGroupText>
+        { onClickSearch && (
+          <InputGroupText
+            onClick={onClickSearch}
+          >
+            <BiSearch />
+          </InputGroupText>
+        )}
 
-        <Form.Control.Feedback type="invalid">
-          {errorMessage}
-        </Form.Control.Feedback>
+        {errorMessage && (
+          <Form.Control.Feedback type="invalid">
+            {errorMessage}
+          </Form.Control.Feedback>
+        )}
       </InputGroup>
 
     </Form.Group>)

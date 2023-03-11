@@ -5,7 +5,8 @@ import {
   useState,
   useEffect
 } from "react"
-import { findOrderSequenceService } from "../../../services"
+import { toastError, toastSuccess } from "../../../helpers/toast"
+import { findOrderSequenceService, finishSaleService } from "../../../services"
 
 interface TransactionsProviderProps {
   children: ReactNode
@@ -22,9 +23,10 @@ interface ISale {
     name: string
   }
   date: Date
-  order_id?: string
+  order_id?: number
   amount: number
   exchange_amount: number
+  discount?: number
   net_amount: number
   gross_valeu: number
   exchange_value: number
@@ -60,14 +62,50 @@ export interface IProductAdd {
   exchange?: boolean
 }
 
+export interface IPayment {
+  id: number
+  value: number
+  expiration_date: Date
+  instalments: string
+  title_number?: string
+  card_approval_number?: string
+  instalments_card?: number
+  bank?: string
+  agency?: string
+  current_account?: string
+  administrator_code?: string
+  store_code?: string
+  type: string
+  approval?: string
+}
+
+interface IPaymentAdd {
+  value: number
+  expiration_date: Date
+  instalments: string
+  title_number?: string
+  card_approval_number?: string
+  instalments_card?: number
+  bank?: string
+  agency?: string
+  current_account?: string
+  administrator_code?: string
+  store_code?: string
+  type: string
+  approval?: string
+}
+
 interface CartContextData {
   sale: ISale
   products: IProduct[]
   addProduct: (product: IProductAdd) => void
   removeProduct: (id: number) => void
+  payments: IPayment[]
+  addPayment: (payment: IPaymentAdd) => void
   changeClient: (id: string, name: string, document: string) => void
   changeSeller: (id: string, name: string) => void
   cancelSale: () => void
+  finishSale: () => Promise<void>
 }
 
 const UserContext = createContext<CartContextData>({} as CartContextData)
@@ -87,6 +125,7 @@ export function OrderProvider({
 }: TransactionsProviderProps): JSX.Element {
   const [sale, setSale] = useState<ISale>(initialSale)
   const [products, setProducts] = useState<IProduct[]>([])
+  const [payments, setPayments] = useState<IPayment[]>([])
 
   async function changeSale(productsChanged: IProduct[]) {
     const saleInfo: ISale = {
@@ -102,7 +141,7 @@ export function OrderProvider({
     if (productsChanged.length === 1 && !sale.order_id) {
       const newOrderId = await findOrderSequenceService.execute()
 
-      saleInfo.order_id = newOrderId
+      saleInfo.order_id = Number(newOrderId)
     }
 
     productsChanged.forEach((prod) => {
@@ -131,8 +170,6 @@ export function OrderProvider({
     if (sale.order_id) {
       sessionStorage.setItem("sale", JSON.stringify(sale))
     }
-
-    console.log({ sale })
   }, [sale])
 
   useEffect(() => {
@@ -215,6 +252,82 @@ export function OrderProvider({
     sessionStorage.removeItem("sale")
   }
 
+  const addPayment = (payment: IPaymentAdd) => {
+    const newPayment = {
+      id: payments.length + 1,
+      ...payment
+    }
+
+    setPayments([...payments, newPayment])
+  }
+
+  const finishSale = async () => {
+    if (!sale.order_id) {
+      throw new Error("Pedido não cadastrado na venda")
+    }
+
+    if (!payments) {
+      throw new Error("Nenhum pagamento registrado")
+    }
+
+    const payment_method_id = payments[0].type
+    const paymentsBack = payments.map(payment => ({
+      id: payment.id,
+      administrator_code: payment.administrator_code,
+      agency: payment.agency,
+      bank: payment.bank,
+      card_approval_number: "",
+      current_account: payment.current_account,
+      expiration_date: payment.expiration_date,
+      instalments: payment.instalments,
+      instalments_card: payment.instalments_card,
+      title_number: payment.title_number,
+      type: payment.type,
+      value: payment.value
+    }))
+
+    const productsBack = products.map(product => ({
+      amount: product.quantity,
+      barcode: product.barcode,
+      canceled: product.canceled,
+      code: product.code,
+      style: product.style,
+      discount: product.discount,
+      id: product.id,
+      net_value: product.valueNet,
+      size: product.size
+    }))
+
+    try {
+      await finishSaleService.execute({
+        amount: sale.amount,
+        amount_value: sale.exchange_value,
+        canceled: false,
+        client_code: sale.client?.id ?? undefined,
+        cpf_cgc_ecf: "",
+        date: sale.date,
+        discount: sale.discount ?? 0,
+        order_id: sale.order_id ?? 0,
+        payment_discount: sale.discount ?? 0,
+        payment_method_id: payment_method_id ?? "",
+        seller_id: sale.seller?.id ?? "",
+        type: 1,
+        payments: paymentsBack,
+        products: productsBack
+      })
+
+      cancelSale()
+      toastSuccess(`Pedido ${sale.order_id} finalizado`)
+    } catch (error) {
+      console.log(error)
+      if (error instanceof Error) {
+        toastError(error.message)
+      } else {
+        toastError("Falha ao salvar pedido")
+      }
+    }
+  }
+
   const value = {
     sale,
     addProduct,
@@ -222,7 +335,10 @@ export function OrderProvider({
     products,
     changeClient,
     changeSeller,
-    cancelSale
+    cancelSale,
+    payments,
+    addPayment,
+    finishSale
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>

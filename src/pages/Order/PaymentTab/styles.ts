@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   gap: 20px;
 
-  flex-direction: row;
+  flex-direction: column;
 `
 
 export const PaymentInfos = styled.div``
